@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\CoinController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return redirect('game');
@@ -20,6 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('coins', [CoinController::class, 'get'])->name('coins.get');
     Route::post('coins', [CoinController::class, 'update'])->name('coins.update');
+
+    Route::post('/payment/generate-token', [PaymentController::class, 'generateToken'])->name('payment.generate-token');
 });
 
 require __DIR__.'/settings.php';
