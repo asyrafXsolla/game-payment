@@ -1,13 +1,45 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Store from '../components/store';
+import axios from 'axios';
 
 export default function Game() {
     const [coins, setCoins] = useState(0);
     const [clickPower] = useState(1);
     const [showStore, setShowStore] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
-    const { auth } = usePage().props as any;
+    const { auth } = usePage().props as unknown as {
+        auth: { user: { id: number; name: string; email: string; coins?: number } };
+    };
+
+    useEffect(() => {
+        loadCoins();
+    }, []);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            saveCoins();
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, [coins]);
+
+    const loadCoins = async () => {
+        try {
+            const response = await axios.get(route('coins.get'));
+            setCoins(response.data.coins);
+        } catch (error) {
+            console.error('Failed to load coins', error);
+        }
+    };
+
+    const saveCoins = async () => {
+        try {
+            await axios.post(route('coins.update'), { coins });
+        } catch (error) {
+            console.error('Failed to save coins', error);
+        }
+    };
 
     const getInitials = (name: string) => {
         return name

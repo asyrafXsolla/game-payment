@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\CoinController;
 
 Route::get('/', function () {
     return redirect('game');
@@ -16,6 +17,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('game', function () {
         return Inertia::render('game');
     })->name('game');
+
+    Route::get('coins', [CoinController::class, 'get'])->name('coins.get');
+    Route::post('coins', [CoinController::class, 'update'])->name('coins.update');
 });
 
 require __DIR__.'/settings.php';
