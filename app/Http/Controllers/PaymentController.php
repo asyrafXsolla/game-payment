@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
@@ -30,5 +31,14 @@ class PaymentController extends Controller
             'error' => 'Failed to generate token',
             'details' => $response->json(),
         ], 500);
+    }
+
+    public function xsollaWebhook(Request $request)
+    {
+        Log::info('Xsolla webhook received', [
+            'payload' => $request->all(),
+        ]);
+
+        return response()->json(['status' => 'success']);
     }
 }

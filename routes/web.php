@@ -22,8 +22,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('coins', [CoinController::class, 'get'])->name('coins.get');
     Route::post('coins', [CoinController::class, 'update'])->name('coins.update');
 
-    Route::post('/payment/generate-token', [PaymentController::class, 'generateToken'])->name('payment.generate-token');
+    Route::post('payment/generate-token', [PaymentController::class, 'generateToken'])
+        ->name('payment.generate-token');
 });
+
+Route::match(['get', 'post'], 'payment/webhook/xsolla', [PaymentController::class, 'xsollaWebhook'])
+    ->name('payment.xsolla-webhook')
+    ->withoutMiddleware(['web', 'csrf']);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
