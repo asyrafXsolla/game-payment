@@ -55,7 +55,6 @@ export default function Store({ coins, setCoins }: StoreProps) {
             setIsLoading(true);
 
             const payload = {
-                sandbox: true,
                 user: {
                     id: {
                         value: 'user_id_'.concat(auth.user.id),
@@ -87,7 +86,7 @@ export default function Store({ coins, setCoins }: StoreProps) {
             // Open the Xsolla payment page in a new tab
             if (response.data?.token) {
                 const paymentUrl = `https://sandbox-secure.xsolla.com/paystation4/?token=${response.data.token}`;
-                window.open(paymentUrl, '_blank');
+                window.location.href = paymentUrl;
             }
         } catch (error) {
             console.error('Failed to generate Xsolla token', error);
@@ -148,9 +147,9 @@ export default function Store({ coins, setCoins }: StoreProps) {
                             <div className="rounded-md border border-blue-700 bg-blue-900 p-4">
                                 <p className="font-medium text-yellow-300">Important:</p>
                                 <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-blue-200">
-                                    <li>A new tab will open for the payment process</li>
-                                    <li>Please do not close your browser during payment</li>
-                                    <li>After successful payment, return to this page</li>
+                                    <li>You will be redirected to the payment page</li>
+                                    <li>Please complete the payment process</li>
+                                    <li>After successful payment, you'll be returned to the game</li>
                                     <li>This is a sandbox environment - use <span className="text-green-300">test cards</span> for payment</li>
                                     <li>Sample test cards available at:
                                         <a
