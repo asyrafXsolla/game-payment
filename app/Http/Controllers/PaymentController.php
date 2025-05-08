@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -99,6 +100,7 @@ class PaymentController extends Controller
                 break;
             case 'order_paid':
                 // Handle order paid
+                (new PaymentService())->processOrderPaid($body);
                 break;
             case 'payment':
                 // Handle payment
