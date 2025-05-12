@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b83b84ea6bcd89f678f2cacf38b3c3c",
+    "content-hash": "55fa1be182d6b34bf28a067c2182264a",
     "packages": [
         {
             "name": "brick/math",
@@ -5923,6 +5923,62 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "xsolla/xsolla-sdk-php",
+            "version": "v4.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xsolla/xsolla-sdk-php.git",
+                "reference": "6bea126a37e7f1a419e61418a7b35cbb04475e33"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xsolla/xsolla-sdk-php/zipball/6bea126a37e7f1a419e61418a7b35cbb04475e33",
+                "reference": "6bea126a37e7f1a419e61418a7b35cbb04475e33",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "~6.0 || ~7.0",
+                "php": "^7.3|~8.0",
+                "symfony/http-foundation": "~2.3 || ~3.0 || ~4.0 || ~5.0 || ~6.0.0 || ~7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2.13",
+                "mtdowling/burgomaster": "^0.0.3",
+                "php": "^7.3|~8.0",
+                "phpunit/phpunit": "^9.0",
+                "symfony/process": "~4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Xsolla\\SDK\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Xsolla SDK for PHP. Xsolla is the authorized reseller and merchant providing e-commerce services for online games.",
+            "homepage": "https://xsolla.com",
+            "keywords": [
+                "api",
+                "games",
+                "payment",
+                "sdk",
+                "xsolla"
+            ],
+            "support": {
+                "docs": "https://developers.xsolla.com",
+                "email": "integration@xsolla.com",
+                "issues": "https://github.com/xsolla/xsolla-sdk-php/issues",
+                "source": "https://github.com/xsolla/xsolla-sdk-php/releases"
+            },
+            "abandoned": true,
+            "time": "2024-05-23T11:07:08+00:00"
         }
     ],
     "packages-dev": [

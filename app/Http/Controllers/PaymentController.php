@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Xsolla\SDK\Webhook\Message\Message;
+use Xsolla\SDK\Webhook\Message\NotificationTypeDictionary;
+use Xsolla\SDK\Webhook\WebhookAuthenticator;
+use Xsolla\SDK\Webhook\WebhookRequest;
 
 class PaymentController extends Controller
 {
@@ -98,14 +103,13 @@ class PaymentController extends Controller
                     return response()->json([
                         'error' => [
                             'code' => 'INVALID_USER',
-                            'message' => 'Invalid user ID'
+                            'message' => 'User not found in the request'
                         ]
                     ], 400);
                 }
-                Log::debug('user id', [
-                    'user_id' => $user['id'],
-                ]);
-                if ($user['id'] !== 'user_id_1') {
+
+                $userId = explode('_', $user['id'])[2] ?? null;
+                if (! User::where('id', $userId)->exists()) {
                     return response()->json([
                         'error' => [
                             'code' => 'INVALID_USER',
@@ -127,7 +131,63 @@ class PaymentController extends Controller
 
         return response()->json(['status' => 'success']);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function xsollaSdkWebhook(Request $request)
+    {
+        $request = Request::createFromGlobals();
+        $message = Message::fromArray($request->toArray());
+
+        $webhookAuthenticator = new WebhookAuthenticator(env('XSOLLA_WEBHOOK_SECRET'));
+        try {
+            $webhookAuthenticator->authenticate(new WebhookRequest($request->headers->all(), $request->getContent()), false);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => [
+                    'code' => 'INVALID_SIGNATURE',
+                    'message' => $e->getMessage()
+                ]
+            ], 403);
+        }
+
+        switch ($message->getNotificationType()) {
+            case NotificationTypeDictionary::USER_VALIDATION:
+                $user = $request['user'] ?? null;
+                if (!$user) {
+                    return response()->json([
+                        'error' => [
+                            'code' => 'INVALID_USER',
+                            'message' => 'User not found in the request'
+                        ]
+                    ], 400);
+                }
+
+                $userId = explode('_', $user['id'])[2] ?? null;
+                if (! User::where('id', $userId)->exists()) {
+                    return response()->json([
+                        'error' => [
+                            'code' => 'INVALID_USER',
+                            'message' => 'Invalid user ID'
+                        ]
+                    ], 400);
+                }
+
+                break;
+            case NotificationTypeDictionary::ORDER_PAID:
+                (new PaymentService())->processOrderPaid($request->toArray());
+            case NotificationTypeDictionary::PAYMENT:
+                /** @var Xsolla\SDK\Webhook\Message\PaymentMessage $message */
+                break;
+            case NotificationTypeDictionary::REFUND:
+                /** @var Xsolla\SDK\Webhook\Message\RefundMessage $message */
+                break;
+            default:
+                throw new \Exception('Notification type not implemented');
+        }
+
+        return response()->json(['status' => 'success']);
+    }
 }
-
-
-
