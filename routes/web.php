@@ -26,9 +26,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('payment.generate-token');
 });
 
-Route::match(['get', 'post'], 'payment/webhook/xsolla', [PaymentController::class, 'xsollaWebhook'])
-    ->name('payment.xsolla-webhook')
-    ->withoutMiddleware(['web', 'csrf']);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

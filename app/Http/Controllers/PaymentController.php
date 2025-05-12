@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function generateToken(Request $request)
     {
         $validatedInputs = $request->validate([
@@ -42,6 +46,10 @@ class PaymentController extends Controller
         ], 500);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function xsollaWebhook(Request $request)
     {
         $headers = $request->headers->all();
@@ -62,12 +70,18 @@ class PaymentController extends Controller
         if (array_key_exists(1, $matches)) {
             $clientSignature = $matches[1];
         } else {
-            throw new InvalidSignatureException('Signature not found in "Authorization" header from Xsolla webhook request: '.$headers['authorization']);
+            return response()->json([
+                'error' => [
+                    'code' => 'INVALID_SIGNATURE',
+                    'message' => 'Signature not found in "Authorization" header from Xsolla webhook request: ' . $headers['authorization'],
+                ]
+            ], 403);
         }
-        $expectedSignature = sha1(json_encode($body) . env('XSOLLA_WEBHOOK_SECRET'));
 
+        $expectedSignature = sha1(json_encode($body) . env('XSOLLA_WEBHOOK_SECRET'));        
         if (!hash_equals($clientSignature, $expectedSignature)) {
-            return response()->json(['error' => [
+            return response()->json([
+                'error' => [
                     'code' => 'INVALID_SIGNATURE',
                     'message' => 'Invalid signature',
                 ]
@@ -81,17 +95,19 @@ class PaymentController extends Controller
                 // Handle user validation
                 $user = $body['user'] ?? null;
                 if (!$user) {
-                    return response()->json(['error' => [
-                        'code' => 'INVALID_USER',
-                        'message' => 'Invalid user ID'
-                    ]
+                    return response()->json([
+                        'error' => [
+                            'code' => 'INVALID_USER',
+                            'message' => 'Invalid user ID'
+                        ]
                     ], 400);
                 }
-                \Log::debug('user id', [
+                Log::debug('user id', [
                     'user_id' => $user['id'],
                 ]);
                 if ($user['id'] !== 'user_id_1') {
-                    return response()->json(['error' => [
+                    return response()->json([
+                        'error' => [
                             'code' => 'INVALID_USER',
                             'message' => 'Invalid user ID'
                         ]
