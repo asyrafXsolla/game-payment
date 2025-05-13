@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Xsolla\SDK\Webhook\Message\Message;
 use Xsolla\SDK\Webhook\Message\NotificationTypeDictionary;
 use Xsolla\SDK\Webhook\WebhookAuthenticator;
-use Xsolla\SDK\Webhook\WebhookRequest;
+use Xsolla\SDK\Webhook\WebhookRequest as XsollaRequest;
 
 class PaymentController extends Controller
 {
@@ -138,12 +138,11 @@ class PaymentController extends Controller
      */
     public function xsollaSdkWebhook(Request $request)
     {
-        $request = Request::createFromGlobals();
         $message = Message::fromArray($request->toArray());
 
         $webhookAuthenticator = new WebhookAuthenticator(env('XSOLLA_WEBHOOK_SECRET'));
         try {
-            $webhookAuthenticator->authenticate(new WebhookRequest($request->headers->all(), $request->getContent()), false);
+            $webhookAuthenticator->authenticate(XsollaRequest::fromGlobals(), false);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => [
