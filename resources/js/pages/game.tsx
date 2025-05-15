@@ -60,7 +60,11 @@ export default function Game() {
             <div className="min-h-screen bg-gradient-to-b from-blue-900 to-black text-white">
                 {/* Header */}
                 <header className="flex items-center justify-between bg-blue-800 p-4">
-                    <h1 className="text-xl font-bold">Cosmic Crystal Miner</h1>
+                    <Link href={route('home')} className="flex items-center gap-2">
+                        <img src="/logo-3.png" alt="game-logo" width="50" />
+                        <span className="text-lg font-bold">Cosmic Crystal Miner</span>
+                    </Link>
+                    {/* <h1 className="text-xl font-bold">Cosmic Crystal Miner</h1> */}
                     <div className="flex items-center gap-4">
                         <div className="flex items-center rounded-full bg-yellow-600 px-3 py-1">
                             <span className="mr-1">💰</span>
@@ -109,8 +113,9 @@ export default function Game() {
                         <Store coins={coins} setCoins={setCoins} />
                     ) : (
                         <div className="mt-20 flex flex-col items-center justify-center">
+                            <img src="/logo-3.png" alt="game-logo" width="30%"/>
                             <div className="mb-8 text-center">
-                                <h2 className="mb-2 text-2xl">Click the crystal to mine coins!</h2>
+                                <h2 className="mb-2 text-2xl">Click the crystal below to mine coins!</h2>
                                 <p className="text-gray-300">
                                     Each click earns you {clickPower} coin{clickPower > 1 ? 's' : ''}
                                 </p>
