@@ -33,6 +33,7 @@ export default function Register() {
             <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-blue-900 to-black p-4">
                 <div className="bg-opacity-50 w-full max-w-md rounded-lg border-2 border-blue-700 bg-blue-900 p-8">
                     <div className="mb-6 text-center">
+                        <img src="/logo.png" className="w-1/2 mx-auto block" alt="Cosmic Crystal Miner Logo" />
                         <h1 className="text-3xl font-bold text-white">Join Cosmic Crystal Miner</h1>
                         <p className="mt-2 text-blue-200">Create an account to start your mining adventure</p>
                     </div>
