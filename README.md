@@ -25,7 +25,7 @@ This repository was made to simulate the integration of Xsolla Pay Station with 
     - `php artisan migrate` - to execute migration in database (by default using SQLite)
     - `npm i` - to install JavaScript packages
     - `npm run build` - to build frontend component
-5. Enter Xsolla necessary information to integrate with Pay Station:
+5. Setup the webhook in the Publisher Account (https://developers.xsolla.com/webhooks/overview/#section/Set-up-webhooks-in-Publisher-Account) and enter the following information to integrate with Xsolla Pay Station:
 ```
 XSOLLA_PROJECT_ID=
 XSOLLA_API_KEY=
