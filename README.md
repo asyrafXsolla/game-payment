@@ -25,13 +25,17 @@ This repository was made to simulate the integration of Xsolla Pay Station with 
     - `php artisan migrate` - to execute migration in database (by default using SQLite)
     - `npm i` - to install JavaScript packages
     - `npm run build` - to build frontend component
-5. Setup the webhook in the Publisher Account (https://developers.xsolla.com/webhooks/overview/#section/Set-up-webhooks-in-Publisher-Account) and enter the following information to integrate with Xsolla Pay Station:
+7. To receive the request to our webhook from Xsolla in local machine, we can utilize ngrok and [get the auth token here](https://dashboard.ngrok.com/get-started/your-authtoken). Enter the auth token to the following key in `.env` file.
+```
+NGROK_AUTHTOKEN=
+```
+8. Get the ngrok tunnel URL using this link: `http://localhost:4040/status`
+9. Setup the webhook in the Publisher Account (refer [documentation](https://developers.xsolla.com/webhooks/overview/#section/Set-up-webhooks-in-Publisher-Account)) using the following endpoint:
+    - Webhook: `<ngrok tunnel URL>/payment/webhook/xsolla`
+    - Webhook with `xsolla-sdk-php`: `<ngrok tunnel URL>/payment/webhook/xsolla-sdk`
+10. Enter the following information to integrate with Xsolla Pay Station:
 ```
 XSOLLA_PROJECT_ID=
 XSOLLA_API_KEY=
 XSOLLA_WEBHOOK_SECRET=
-```
-6. To receive the request to our webhook from Xsolla, we can utilize Ngrok and (get the auth token here)[https://dashboard.ngrok.com/get-started/your-authtoken].
-```
-NGROK_AUTHTOKEN=
 ```
