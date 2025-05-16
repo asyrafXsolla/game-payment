@@ -16,7 +16,7 @@ This repository was made to simulate the integration of Xsolla Pay Station with 
 
 # Installation Guide
 1. Ensure you have Docker installed in your local machine.
-2. In the root folder, execute this: `docker composer up -d`
+2. In the root folder, execute this: `docker compose up -d`
 3. To get into the contanier, execute this: `docker exec -it game-payment-laravel.test-1 bash`
 4. Run the following commands:
     - `cp .env.example .env` - to copy the .env file from .env.example
@@ -39,3 +39,4 @@ XSOLLA_PROJECT_ID=
 XSOLLA_API_KEY=
 XSOLLA_WEBHOOK_SECRET=
 ```
+11. The game should be accessible now via `http://localhost/login`
